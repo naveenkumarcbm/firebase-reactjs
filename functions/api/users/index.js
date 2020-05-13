@@ -13,7 +13,7 @@ const loginUser = (request, response) => {
   const { valid, errors } = validateLoginData(request.body);
   if (!valid) return response.status(400).json(errors);
 
-  firebase
+  return firebase
     .auth()
     .signInWithEmailAndPassword(email, password)
     .then((data) => {
@@ -35,11 +35,9 @@ const signUpUser = (request, response) => {
     firstName,
     lastName,
     email,
-    phoneNumber,
-    country,
     password,
     confirmPassword,
-    username,
+    username
   } = request.body;
 
   const { valid, errors } = validateSignUpData(request.body);
@@ -47,7 +45,7 @@ const signUpUser = (request, response) => {
   if (!valid) return response.status(400).json(errors);
 
   let token, userId;
-  db.doc(`/users/${username}`)
+  return db.doc(`/users/${username}`)
     .get()
     .then((doc) => {
       if (doc.exists) {
@@ -68,8 +66,6 @@ const signUpUser = (request, response) => {
         firstName,
         lastName,
         username,
-        phoneNumber,
-        country,
         email,
         createdAt: new Date().toISOString(),
         userId,

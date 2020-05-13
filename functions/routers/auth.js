@@ -11,7 +11,7 @@ const auth = async (request, response, next) => {
     console.error('No token found');
     return response.status(403).json({ error: 'Unauthorized' });
   }
-  admin
+  return admin
     .auth()
     .verifyIdToken(idToken)
 		.then((decodedToken) => {
@@ -23,7 +23,7 @@ const auth = async (request, response, next) => {
   //   return response.status(200).json(data.docs[0].data());
   // })
 		.then((data) => {
-      console.log(data.docs[0].data())
+      console.log(data)
 			request.user.username = data.docs[0].data().username;
 			request.user.imageUrl = data.docs[0].data().imageUrl;
 			return next();
